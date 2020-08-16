@@ -11,10 +11,33 @@ export interface HeartProps {
   createdAt: number;
 }
 
+interface HeartWrapperProps {
+  children: React.ReactNode;
+}
+
+const HeartWrapper: FC<HeartWrapperProps> = ({ children }) => {
+  const style: CSSProperties = {
+    position: 'fixed',
+    right: 0,
+    bottom: 0,
+    width: '80px',
+    height: '80px',
+  }
+
+  return(
+    <div style={style}>
+      {children}
+    </div>
+  );
+}
+
 const HeartButton: FC<HeartButtonProps> = () => {
   const [hearts, changeHearts] = useState<HeartProps[]>([]);
 
   const style: CSSProperties = {
+    position: 'absolute',
+    right: '16px',
+    bottom: '16px',
     borderRadius: '48px',
     width: '48px',
     height: '48px',
@@ -43,15 +66,15 @@ const HeartButton: FC<HeartButtonProps> = () => {
   }
 
   return (
-    <div>
-      { hearts.map(heart => <Heart />) }
+    <HeartWrapper>
       <div style={style} onClick={onClick}>
         <div style={iconStyle}>
           <HeartIcon />
           <ButtonText style={textStyle} />
         </div>
       </div>
-    </div>
+      { hearts.map(heart => <Heart xOrigin={32} yOrigin={32} />) }
+    </HeartWrapper>
   );
 };
 

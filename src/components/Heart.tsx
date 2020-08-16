@@ -2,19 +2,20 @@ import React, { useState, useEffect } from 'react';
 import HeartIcon from '../icons/HeartFill';
 
 export interface HeartButtonProps {
+  xOrigin?: number;
+  yOrigin?: number;
   style?: React.CSSProperties;
 }
 
-const Heart = () => {
-  const initPosX = 50;
-  const [posX, changePosX] = useState(initPosX);
-  const [posY, changePosY] = useState(10);
+const Heart = ({ xOrigin = 50, yOrigin = 10 }) => {
+  const [xPos, changePosX] = useState(xOrigin);
+  const [yPos, changePosY] = useState(yOrigin);
   const [opacity, changeOpacity] = useState(1);
 
   const style: React.CSSProperties = {
     position: 'absolute',
-    right: posX,
-    bottom: posY,
+    right: xPos,
+    bottom: yPos,
     opacity: opacity,
     transition: 'bottom 1s linear, right 1s linear, opacity 1s linear',
   };
@@ -22,8 +23,8 @@ const Heart = () => {
   const moveHeart = () => {
     const range = 10 + Math.random() * 10;
     const xDiff = Math.random() > 0.5 ? -1 * range : range;
-    changePosY(posY => posY + 100);
-    changePosX(posX => posX + xDiff);
+    changePosY(yPos => yPos + 70);
+    changePosX(xPos => xPos + xDiff);
     changeOpacity(opacity => opacity === 0 ? 1 : 0);
   };
 
@@ -31,11 +32,11 @@ const Heart = () => {
     moveHeart();
     const handle = setInterval(() => {
       moveHeart();
-    }, 900)
+    }, 800)
 
     setTimeout(() => {
       clearInterval(handle);
-    }, 1850);
+    }, 1650);
   }, []);
 
   return(
