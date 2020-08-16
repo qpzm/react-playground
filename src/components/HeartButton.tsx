@@ -70,7 +70,7 @@ const HeartButton: FC<HeartButtonProps> = () => {
       <div style={style} onClick={onClick}>
         <div style={iconStyle}>
           <HeartIcon />
-          <ButtonText style={textStyle} />
+          <ButtonText style={textStyle} count={hearts.length} />
         </div>
       </div>
       { hearts.map(heart => <Heart xOrigin={32} yOrigin={32} />) }
