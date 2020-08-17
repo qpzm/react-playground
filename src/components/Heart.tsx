@@ -29,7 +29,8 @@ const Heart = ({ xOrigin = 50, yOrigin = 10 }) => {
   };
 
   useEffect(() => {
-    moveHeart();
+    // FIXME the first transition is not visible without a small delay.
+    setTimeout(() => { moveHeart() }, 30);
     const handle = setInterval(() => {
       moveHeart();
     }, 800)

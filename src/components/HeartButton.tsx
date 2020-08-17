@@ -1,7 +1,8 @@
-import React, { FC, CSSProperties, useState } from 'react';
+import React, { FC, CSSProperties, useState, useContext, useEffect } from 'react';
 import Heart from './Heart';
 import HeartIcon from '../icons/HeartFill';
 import ButtonText from './ButtonText';
+import { ReactionContext } from '../ReactionContext';
 
 export interface HeartButtonProps {
   style?: CSSProperties;
@@ -33,6 +34,7 @@ const HeartWrapper: FC<HeartWrapperProps> = ({ children }) => {
 
 const HeartButton: FC<HeartButtonProps> = () => {
   const [hearts, changeHearts] = useState<HeartProps[]>([]);
+  const { reactions, like }  = useContext(ReactionContext);
 
   const style: CSSProperties = {
     position: 'absolute',
@@ -41,7 +43,7 @@ const HeartButton: FC<HeartButtonProps> = () => {
     borderRadius: '48px',
     width: '48px',
     height: '48px',
-    background: 'linear-gradient(180deg,#5c3fbf 0,#452d96 100%)',
+    background: 'linear-gradient(180deg, #5c3fbf 0, #452d96 100%)',
     cursor: 'pointer'
   }
 
@@ -55,14 +57,17 @@ const HeartButton: FC<HeartButtonProps> = () => {
     color: 'white',
   };
 
-  const onClick = () => {
+  useEffect(() => {
+    createHeart();
+  }, [reactions])
+
+  const createHeart = () => {
     const heart = { createdAt: Date.now() }
-    changeHearts(
-      hearts =>
-        // hearts.filter(x => x.createdAt + lifespan > Date.now()).concat(heart)
-        hearts.concat(heart)
-    );
-    console.log(hearts);
+    changeHearts(hearts => hearts.concat(heart));
+  }
+
+  const onClick = () => {
+    like();
   }
 
   return (
@@ -70,10 +75,11 @@ const HeartButton: FC<HeartButtonProps> = () => {
       <div style={style} onClick={onClick}>
         <div style={iconStyle}>
           <HeartIcon />
-          <ButtonText style={textStyle} count={hearts.length} />
+          <ButtonText style={textStyle} count={reactions} />
         </div>
       </div>
-      { hearts.map(heart => <Heart xOrigin={32} yOrigin={32} />) }
+      { hearts.map(heart =>
+        <Heart key={heart.createdAt} xOrigin={32} yOrigin={32} />) }
     </HeartWrapper>
   );
 };
